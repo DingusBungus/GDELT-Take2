@@ -1,0 +1,20 @@
+<section ng-controller="QueriesController" ng-init="find()">
+  <div class="page-header">
+    <h1>Queries</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="querie in queries" ui-sref="queries.view({querieId: querie._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Asked on
+        <span ng-bind="querie.created | date:'mediumDate'"></span>
+        by
+        <span ng-bind="querie.user.displayName"></span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="querie.title"></h4>
+      <p class="list-group-item-text" ng-bind="querie.content"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-if="queries.$resolved && !queries.length">
+    No queries yet, why don't you <a ui-sref="queries.create">create one</a>?
+  </div>
+</section>
