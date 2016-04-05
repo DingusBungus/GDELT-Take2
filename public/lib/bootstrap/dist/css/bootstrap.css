@@ -4,6 +4,36 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+
+/*-- Added by Conor Doherty for background image --*/
+/*-- Pulled from https://css-tricks.com/perfect-full-page-background-image/ --*/
+/*-- Credit given to: Doug Neiner --*/
+
+background-img {
+  /* Set rules to fill background */
+  min-height: 100% !important;
+  min-width: 1024px !important;
+  
+  /* Set up proportionate scaling */
+  width: 100% !important;
+  height: auto !important;
+  
+  /* Set up positioning */
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+@media screen and (max-width: 1024px) { /* Specific to this particular image */
+  background-img {
+    left: 50% !important;
+    margin-left: -512px !important;   /* 50% */
+  }
+}
+
+/*--------------------------------------------------*/
+
+
 html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;

@@ -1,18 +1,46 @@
-<section ng-controller="HomeController">
-  <div>
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
-        <img alt="GDELT" class="img-responsive text-center" src="modules/core/client/img/brand/GDELT-World.gif" />
+<body>
+<!--
+For enabling facebook plugin stuff
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '204404756604994',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+-->
+
+  <section ng-controller="HomeController">
+    <style>
+      body {
+        background-image: url('modules/core/client/img/brand/nebula.jpg');
+      }
+    </style>
+    <div>
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+          <img alt="GDELT" class="img-responsive text-center" src="modules/core/client/img/brand/GDELT-World.gif" />
+        </div>
+      </div>
+      <br>
+      <div class="col-md-12 text-center">
+        <div class="btn-group">
+          <p>
+            <a class="btn btn-primary btn-lg" href="http://gdeltproject.org/" target="_blank">Learn more</a>
+            <a class="btn btn-primary btn-lg" ui-sref="queries.create">Make a Query</a>
+          </p>
+        </div>
       </div>
     </div>
-    <br>
-    <div class="col-md-12 text-center">
-      <div class="btn-group">
-        <p>
-          <a class="btn btn-primary btn-lg" href="http://gdeltproject.org/" target="_blank">Learn more</a>
-          <a class="btn btn-primary btn-lg" ui-sref="queries.create">Make a Query</a>
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
+</body>
