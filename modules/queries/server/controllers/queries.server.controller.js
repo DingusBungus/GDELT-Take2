@@ -7,6 +7,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   query = mongoose.model('query'),
   actor = mongoose.model('actor'),
+  event = mongoose.model('event'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
@@ -39,6 +40,13 @@ exports.read = function (req, res) {
  */
 exports.readActor = function (req, res) {
   res.json(req.actor);
+};
+
+/**
+ * Show the current event
+ */
+exports.readEvent = function (req, res) {
+  res.json(req.event);
 };
 
 /**
@@ -109,6 +117,21 @@ exports.listActors = function (req, res) {
 };
 
 /**
+ * List of Events
+ */
+exports.listEvents = function (req, res) {
+  event.find().sort('name').exec(function (err, events) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(events);
+    }
+  });
+};
+
+/**
  * query middleware
  */
 exports.queryByID = function (req, res, next, id) {
@@ -155,5 +178,30 @@ exports.actorByID = function (req, res, next, id) {
     next();
   });
 };
+
+/**
+ * query middleware
+ */
+exports.eventByID = function (req, res, next, id) {
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'event is invalid'
+    });
+  }
+
+  event.findById(id).exec(function (err, event) {
+    if (err) {
+      return next(err);
+    } else if (!event) {
+      return res.status(404).send({
+        message: 'No event with that identifier has been found'
+      });
+    }
+    req.event = event;
+    next();
+  });
+};
+
 
 

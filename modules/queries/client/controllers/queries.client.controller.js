@@ -1,8 +1,8 @@
 'use strict';
 
 // Queries controller
-angular.module('queries').controller('QueriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Queries', 'actors',
-  function ($scope, $stateParams, $location, Authentication, Queries, actors) {
+angular.module('queries').controller('QueriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Queries', 'actors', 'events',
+  function ($scope, $stateParams, $location, Authentication, Queries, actors, events) {
     $scope.authentication = Authentication;
     $scope.queryArgs = {
       country_actor1: '',
@@ -19,8 +19,9 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
       end_year: '',
       by_month: false
     };
-    $scope.actor = '';
+
     $scope.actors = [];
+    $scope.events = [];
 
     // Create new query
     $scope.create = function (isValid) {
@@ -121,17 +122,36 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
       });
     };
 
-    $scope.confirmActor = function(index) {
-      $scope.queryArgs.country_actor1 = $scope.actors[index];
+    $scope.confirmActor = function(index, type) {
+      if (type === 'country') {
+        $scope.queryArgs.country_actor1 = $scope.actors[index];
+        $('#countryModal').modal('hide');
+      } else if (type === 'type') {
+        $scope.queryArgs.type_actor1 = $scope.actors[index];
+        $('#typeModal').modal('hide');
+      } else if (type === 'ethnic') {
+        $scope.queryArgs.ethnic_actor1 = $scope.actors[index];
+        $('#ethnicModal').modal('hide');
+      } else if (type === 'religion') {
+        $scope.queryArgs.religion_actor1 = $scope.actors[index];
+        $('#religionModal').modal('hide');
+      } else if (type === 'knowngroup') {
+        $scope.queryArgs.knowngroup_actor1 = $scope.actors[index];
+        $('#knowngroupModal').modal('hide');
+      }
     };
 
-    $scope.clearResults = function(){
-      $scope.apiError = false;
-      $scope.assetsLoaded = false;
+    $scope.confirmEvent = function(index) {
+      $scope.queryArgs.event = $scope.events[index];
+      $('#eventModal').modal('hide');
     };
 
     $scope.findActors = function(){
       $scope.actors = actors.query();
+    };
+
+    $scope.findEvents = function() {
+      $scope.events = events.query();
     };
   }
 ]);

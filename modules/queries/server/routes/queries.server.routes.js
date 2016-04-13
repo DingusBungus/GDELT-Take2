@@ -19,12 +19,19 @@ module.exports = function (app) {
     .delete(queries.delete);
 
   app.route('/api/actors/')
-      .get(queries.listActors);
+    .get(queries.listActors);
 
   app.route('/api/actors/:actorId')
     .get(queries.readActor);
 
+  app.route('/api/events/')
+    .get(queries.listEvents);
+
+  app.route('/api/events/:eventId')
+    .get(queries.readEvent);
+
   // Finish by binding the query middleware
   app.param('queryId', queries.queryByID);
   app.param('actorId', queries.actorByID);
+  app.param('eventId', queries.eventByID);
 };
