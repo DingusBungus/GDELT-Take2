@@ -18,7 +18,7 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/queries',
       permissions: '*'
     }, {
-      resources: '/api/queries/:querieId',
+      resources: '/api/queries/:queryId',
       permissions: '*'
     }]
   }, {
@@ -27,7 +27,7 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/queries',
       permissions: ['get', 'post']
     }, {
-      resources: '/api/queries/:querieId',
+      resources: '/api/queries/:queryId',
       permissions: ['get']
     }]
   }, {
@@ -36,7 +36,7 @@ exports.invokeRolesPolicies = function () {
       resources: '/api/queries',
       permissions: ['get']
     }, {
-      resources: '/api/queries/:querieId',
+      resources: '/api/queries/:queryId',
       permissions: ['get']
     }]
   }]);
@@ -48,8 +48,8 @@ exports.invokeRolesPolicies = function () {
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an querie is being processed and the current user created it then allow any manipulation
-  if (req.querie && req.user && req.querie.user.id === req.user.id) {
+  // If an query is being processed and the current user created it then allow any manipulation
+  if (req.query && req.user && req.query.user.id === req.user.id) {
     return next();
   }
 

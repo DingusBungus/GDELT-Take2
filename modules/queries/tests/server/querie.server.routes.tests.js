@@ -5,18 +5,18 @@ var should = require('should'),
   path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Querie = mongoose.model('Querie'),
+  query = mongoose.model('query'),
   express = require(path.resolve('./config/lib/express'));
 
 /**
  * Globals
  */
-var app, agent, credentials, user, querie;
+var app, agent, credentials, user, query;
 
 /**
- * Querie routes tests
+ * query routes tests
  */
-describe('Querie CRUD tests', function () {
+describe('query CRUD tests', function () {
 
   before(function (done) {
     // Get application
@@ -44,18 +44,18 @@ describe('Querie CRUD tests', function () {
       provider: 'local'
     });
 
-    // Save a user to the test db and create new querie
+    // Save a user to the test db and create new query
     user.save(function () {
-      querie = {
-        title: 'Querie Title',
-        content: 'Querie Content'
+      query = {
+        title: 'query Title',
+        content: 'query Content'
       };
 
       done();
     });
   });
 
-  it('should be able to save an querie if logged in', function (done) {
+  it('should be able to save an query if logged in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -68,12 +68,12 @@ describe('Querie CRUD tests', function () {
         // Get the userId
         var userId = user.id;
 
-        // Save a new querie
+        // Save a new query
         agent.post('/api/queries')
-          .send(querie)
+          .send(query)
           .expect(200)
           .end(function (querieSaveErr, querieSaveRes) {
-            // Handle querie save error
+            // Handle query save error
             if (querieSaveErr) {
               return done(querieSaveErr);
             }
@@ -81,7 +81,7 @@ describe('Querie CRUD tests', function () {
             // Get a list of queries
             agent.get('/api/queries')
               .end(function (queriesGetErr, queriesGetRes) {
-                // Handle querie save error
+                // Handle query save error
                 if (queriesGetErr) {
                   return done(queriesGetErr);
                 }
@@ -91,7 +91,7 @@ describe('Querie CRUD tests', function () {
 
                 // Set assertions
                 (queries[0].user._id).should.equal(userId);
-                (queries[0].title).should.match('Querie Title');
+                (queries[0].title).should.match('query Title');
 
                 // Call the assertion callback
                 done();
@@ -100,9 +100,9 @@ describe('Querie CRUD tests', function () {
       });
   });
 
-  it('should not be able to save an querie if not logged in', function (done) {
+  it('should not be able to save an query if not logged in', function (done) {
     agent.post('/api/queries')
-      .send(querie)
+      .send(query)
       .expect(403)
       .end(function (querieSaveErr, querieSaveRes) {
         // Call the assertion callback
@@ -110,9 +110,9 @@ describe('Querie CRUD tests', function () {
       });
   });
 
-  it('should not be able to save an querie if no title is provided', function (done) {
+  it('should not be able to save an query if no title is provided', function (done) {
     // Invalidate title field
-    querie.title = '';
+    query.title = '';
 
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -126,21 +126,21 @@ describe('Querie CRUD tests', function () {
         // Get the userId
         var userId = user.id;
 
-        // Save a new querie
+        // Save a new query
         agent.post('/api/queries')
-          .send(querie)
+          .send(query)
           .expect(400)
           .end(function (querieSaveErr, querieSaveRes) {
             // Set message assertion
             (querieSaveRes.body.message).should.match('Title cannot be blank');
 
-            // Handle querie save error
+            // Handle query save error
             done(querieSaveErr);
           });
       });
   });
 
-  it('should be able to update an querie if signed in', function (done) {
+  it('should be able to update an query if signed in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -153,25 +153,25 @@ describe('Querie CRUD tests', function () {
         // Get the userId
         var userId = user.id;
 
-        // Save a new querie
+        // Save a new query
         agent.post('/api/queries')
-          .send(querie)
+          .send(query)
           .expect(200)
           .end(function (querieSaveErr, querieSaveRes) {
-            // Handle querie save error
+            // Handle query save error
             if (querieSaveErr) {
               return done(querieSaveErr);
             }
 
-            // Update querie title
-            querie.title = 'WHY YOU GOTTA BE SO MEAN?';
+            // Update query title
+            query.title = 'WHY YOU GOTTA BE SO MEAN?';
 
-            // Update an existing querie
+            // Update an existing query
             agent.put('/api/queries/' + querieSaveRes.body._id)
-              .send(querie)
+              .send(query)
               .expect(200)
               .end(function (querieUpdateErr, querieUpdateRes) {
-                // Handle querie update error
+                // Handle query update error
                 if (querieUpdateErr) {
                   return done(querieUpdateErr);
                 }
@@ -188,10 +188,10 @@ describe('Querie CRUD tests', function () {
   });
 
   it('should be able to get a list of queries if not signed in', function (done) {
-    // Create new querie model instance
-    var querieObj = new Querie(querie);
+    // Create new query model instance
+    var querieObj = new query(query);
 
-    // Save the querie
+    // Save the query
     querieObj.save(function () {
       // Request queries
       request(app).get('/api/queries')
@@ -206,16 +206,16 @@ describe('Querie CRUD tests', function () {
     });
   });
 
-  it('should be able to get a single querie if not signed in', function (done) {
-    // Create new querie model instance
-    var querieObj = new Querie(querie);
+  it('should be able to get a single query if not signed in', function (done) {
+    // Create new query model instance
+    var querieObj = new query(query);
 
-    // Save the querie
+    // Save the query
     querieObj.save(function () {
       request(app).get('/api/queries/' + querieObj._id)
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('title', querie.title);
+          res.body.should.be.instanceof(Object).and.have.property('title', query.title);
 
           // Call the assertion callback
           done();
@@ -223,31 +223,31 @@ describe('Querie CRUD tests', function () {
     });
   });
 
-  it('should return proper error for single querie with an invalid Id, if not signed in', function (done) {
+  it('should return proper error for single query with an invalid Id, if not signed in', function (done) {
     // test is not a valid mongoose Id
     request(app).get('/api/queries/test')
       .end(function (req, res) {
         // Set assertion
-        res.body.should.be.instanceof(Object).and.have.property('message', 'Querie is invalid');
+        res.body.should.be.instanceof(Object).and.have.property('message', 'query is invalid');
 
         // Call the assertion callback
         done();
       });
   });
 
-  it('should return proper error for single querie which doesnt exist, if not signed in', function (done) {
-    // This is a valid mongoose Id but a non-existent querie
+  it('should return proper error for single query which doesnt exist, if not signed in', function (done) {
+    // This is a valid mongoose Id but a non-existent query
     request(app).get('/api/queries/559e9cd815f80b4c256a8f41')
       .end(function (req, res) {
         // Set assertion
-        res.body.should.be.instanceof(Object).and.have.property('message', 'No querie with that identifier has been found');
+        res.body.should.be.instanceof(Object).and.have.property('message', 'No query with that identifier has been found');
 
         // Call the assertion callback
         done();
       });
   });
 
-  it('should be able to delete an querie if signed in', function (done) {
+  it('should be able to delete an query if signed in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -260,22 +260,22 @@ describe('Querie CRUD tests', function () {
         // Get the userId
         var userId = user.id;
 
-        // Save a new querie
+        // Save a new query
         agent.post('/api/queries')
-          .send(querie)
+          .send(query)
           .expect(200)
           .end(function (querieSaveErr, querieSaveRes) {
-            // Handle querie save error
+            // Handle query save error
             if (querieSaveErr) {
               return done(querieSaveErr);
             }
 
-            // Delete an existing querie
+            // Delete an existing query
             agent.delete('/api/queries/' + querieSaveRes.body._id)
-              .send(querie)
+              .send(query)
               .expect(200)
               .end(function (querieDeleteErr, querieDeleteRes) {
-                // Handle querie error error
+                // Handle query error error
                 if (querieDeleteErr) {
                   return done(querieDeleteErr);
                 }
@@ -290,23 +290,23 @@ describe('Querie CRUD tests', function () {
       });
   });
 
-  it('should not be able to delete an querie if not signed in', function (done) {
-    // Set querie user
-    querie.user = user;
+  it('should not be able to delete an query if not signed in', function (done) {
+    // Set query user
+    query.user = user;
 
-    // Create new querie model instance
-    var querieObj = new Querie(querie);
+    // Create new query model instance
+    var querieObj = new query(query);
 
-    // Save the querie
+    // Save the query
     querieObj.save(function () {
-      // Try deleting querie
+      // Try deleting query
       request(app).delete('/api/queries/' + querieObj._id)
         .expect(403)
         .end(function (querieDeleteErr, querieDeleteRes) {
           // Set message assertion
           (querieDeleteRes.body.message).should.match('User is not authorized');
 
-          // Handle querie error error
+          // Handle query error error
           done(querieDeleteErr);
         });
 
@@ -315,7 +315,7 @@ describe('Querie CRUD tests', function () {
 
   afterEach(function (done) {
     User.remove().exec(function () {
-      Querie.remove().exec(done);
+      query.remove().exec(done);
     });
   });
 });

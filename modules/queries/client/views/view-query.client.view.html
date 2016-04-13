@@ -1,9 +1,9 @@
 <section ng-controller="QueriesController" ng-init="findOne()">
   <div class="page-header">
-    <h1 ng-bind="querie.title"></h1>
+    <h1 ng-bind="query.title"></h1>
   </div>
-  <div class="pull-right" ng-show="authentication.user._id == querie.user._id">
-    <a class="btn btn-primary" ui-sref="queries.edit({querieId: querie._id})">
+  <div class="pull-right" ng-show="authentication.user._id == query.user._id">
+    <a class="btn btn-primary" ui-sref="queries.edit({queryId: query._id})">
       <i class="glyphicon glyphicon-edit"></i>
     </a>
     <a class="btn btn-primary" ng-click="remove();">
@@ -13,10 +13,10 @@
   <small>
     <em class="text-muted">
       Posted on
-      <span ng-bind="querie.created | date:'mediumDate'"></span>
+      <span ng-bind="query.created | date:'mediumDate'"></span>
       by
-      <span ng-bind="querie.user.displayName"></span>
+      <span ng-bind="query.user.displayName"></span>
     </em>
   </small>
-  <p class="lead" ng-bind="querie.content"></p>
+  <p class="lead" ng-bind="query.content"></p>
 </section>

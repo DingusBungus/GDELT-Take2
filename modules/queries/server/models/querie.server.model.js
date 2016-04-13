@@ -7,9 +7,9 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
 /**
- * Querie Schema
+ * query Schema
  */
-var QuerieSchema = new Schema({
+var Schema = new Schema({
   created: {
     type: Date,
     default: Date.now
@@ -31,4 +31,4 @@ var QuerieSchema = new Schema({
   }
 });
 
-mongoose.model('Querie', QuerieSchema);
+mongoose.model('query', Schema);

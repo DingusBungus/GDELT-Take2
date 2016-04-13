@@ -1,69 +1,109 @@
 'use strict';
 
 // Queries controller
-angular.module('queries').controller('QueriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Queries',
-  function ($scope, $stateParams, $location, Authentication, Queries) {
+angular.module('queries').controller('QueriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Queries', 'actors',
+  function ($scope, $stateParams, $location, Authentication, Queries, actors) {
     $scope.authentication = Authentication;
+    $scope.queryArgs = {
+      country_actor1: '',
+      ethnic_actor1: '',
+      type_actor1: '',
+      religion_actor1: '',
+      knowngroup_actor1: '',
+      event: '',
+      start_day: '',
+      start_month: '',
+      start_year: '',
+      end_day: '',
+      end_month: '',
+      end_year: '',
+      by_month: false
+    };
+    $scope.actor = '';
+    $scope.actors = [];
 
-    // Create new Querie
+    // Create new query
     $scope.create = function (isValid) {
       $scope.error = null;
 
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'querieForm');
-
+        $scope.$broadcast('show-errors-check-validity', 'queryForm');
         return false;
       }
 
-      // Create new Querie object
-      var querie = new Queries({
-        title: this.title,
-        content: this.content
+      // Create new query object
+      var query = new Queries({
+        country_actor1: $scope.queryArgs.country_actor1,
+        ethnic_actor1: $scope.queryArgs.ethnic_actor1,
+        type_actor1: $scope.queryArgs.type_actor1,
+        religion_actor1: $scope.queryArgs.religion_actor1,
+        knowngroup_actor1: $scope.queryArgs.knowngroup_actor1,
+        event: $scope.queryArgs.event,
+        start_day: $scope.queryArgs.start_day,
+        start_month: $scope.queryArgs.start_month,
+        start_year: $scope.queryArgs.start_year,
+        end_day: $scope.queryArgs.end_day,
+        end_month: $scope.queryArgs.end_month,
+        end_year: $scope.queryArgs.end_year,
+        by_month: $scope.queryArgs.by_month
       });
 
       // Redirect after save
-      querie.$save(function (response) {
+      query.$save(function (response) {
         $location.path('queries/' + response._id);
 
         // Clear form fields
-        $scope.title = '';
-        $scope.content = '';
+        $scope.queryArgs = {
+          country_actor1: '',
+          ethnic_actor1: '',
+          type_actor1: '',
+          religion_actor1: '',
+          knowngroup_actor1: '',
+          event: '',
+          start_day: '',
+          start_month: '',
+          start_year: '',
+          end_day: '',
+          end_month: '',
+          end_year: '',
+          by_month: false
+        };
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
     };
 
-    // Remove existing Querie
-    $scope.remove = function (querie) {
-      if (querie) {
-        querie.$remove();
+    // Remove existing query
+    $scope.remove = function (query) {
+      if (query) {
+        query.$remove();
 
         for (var i in $scope.queries) {
-          if ($scope.queries[i] === querie) {
+          if ($scope.queries[i] === query) {
             $scope.queries.splice(i, 1);
           }
         }
       } else {
-        $scope.querie.$remove(function () {
+        $scope.query.$remove(function () {
           $location.path('queries');
         });
       }
     };
 
-    // Update existing Querie
+    // Update existing query
     $scope.update = function (isValid) {
       $scope.error = null;
 
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'querieForm');
+        $scope.$broadcast('show-errors-check-validity', 'queryForm');
 
         return false;
       }
 
-      var querie = $scope.querie;
+      var query = $scope.query;
 
-      querie.$update(function () {
-        $location.path('queries/' + querie._id);
+      query.$update(function () {
+        $location.path('queries/' + query._id);
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -74,11 +114,24 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
       $scope.queries = Queries.query();
     };
 
-    // Find existing Querie
+    // Find existing query
     $scope.findOne = function () {
-      $scope.querie = Queries.get({
-        querieId: $stateParams.querieId
+      $scope.query = Queries.get({
+        queryId: $stateParams.queryId
       });
+    };
+
+    $scope.confirmActor = function(index) {
+      $scope.queryArgs.country_actor1 = $scope.actors[index];
+    };
+
+    $scope.clearResults = function(){
+      $scope.apiError = false;
+      $scope.assetsLoaded = false;
+    };
+
+    $scope.findActors = function(){
+      $scope.actors = actors.query();
     };
   }
 ]);
