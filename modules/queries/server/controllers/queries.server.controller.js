@@ -7,7 +7,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   query = mongoose.model('query'),
   actor = mongoose.model('actor'),
-  event = mongoose.model('event'),
+  eventX = mongoose.model('event'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
@@ -120,7 +120,7 @@ exports.listActors = function (req, res) {
  * List of Events
  */
 exports.listEvents = function (req, res) {
-  event.find().sort('name').exec(function (err, events) {
+  eventX.find().sort('name').exec(function (err, events) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -190,7 +190,7 @@ exports.eventByID = function (req, res, next, id) {
     });
   }
 
-  event.findById(id).exec(function (err, event) {
+  eventX.findById(id).exec(function (err, event) {
     if (err) {
       return next(err);
     } else if (!event) {

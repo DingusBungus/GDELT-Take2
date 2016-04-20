@@ -20,5 +20,3 @@ var Schema = new Schema({
 });
 
 var actor = mongoose.model('actor', Schema);
-
-module.exports = actor;

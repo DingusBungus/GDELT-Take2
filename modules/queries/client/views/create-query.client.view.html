@@ -227,6 +227,37 @@
         </div>
 
         <br>
+        <h2>Dates</h2>
+        <br>
+        <h3>Start Date</h3>
+        <div class="form-group">
+          <label for="selectDate">Date of Birth:</label>
+          <select id="selectDate" style="width:auto;" class="form-control selectWidth">
+            @for ($i = 1; $i <= 31; $i++)
+            <option class="">{{$i}}</option>
+            @endfor
+          </select>
+          <select id="selectMonth" style="width:auto;" class="form-control selectWidth">
+            @for ($i = 1; $i <= 12; $i++)
+            <option class="">{{$i}}</option>
+            @endfor
+          </select>
+          <select id="selectYear" style="width:auto;" class="form-control selectWidth">
+            @for ($i = 1900; $i <= 2015; $i++)
+            <option class="">{{$i}}</option>
+            @endfor
+          </select>
+        </div>
+        <h3>End Date</h3>
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+            <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+          </ul>
+        </div>
 
       <div class="form-group col-md-3">
         <input type="submit" class="btn btn-primary btn-lg">
