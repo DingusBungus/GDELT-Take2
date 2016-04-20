@@ -10,7 +10,7 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
       type_actor1: '',
       religion_actor1: '',
       knowngroup_actor1: '',
-      event: '',
+      event_object: '',
       start_day: '',
       start_month: '',
       start_year: '',
@@ -39,7 +39,7 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
         type_actor1: $scope.queryArgs.type_actor1,
         religion_actor1: $scope.queryArgs.religion_actor1,
         knowngroup_actor1: $scope.queryArgs.knowngroup_actor1,
-        event: $scope.queryArgs.event,
+        event_object: $scope.queryArgs.event_object,
         start_day: $scope.queryArgs.start_day,
         start_month: $scope.queryArgs.start_month,
         start_year: $scope.queryArgs.start_year,
@@ -60,7 +60,7 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
           type_actor1: '',
           religion_actor1: '',
           knowngroup_actor1: '',
-          event: '',
+          event_object: '',
           start_day: '',
           start_month: '',
           start_year: '',
@@ -142,7 +142,7 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
     };
 
     $scope.confirmEvent = function(index) {
-      $scope.queryArgs.event = $scope.events[index];
+      $scope.queryArgs.event_object = $scope.events[index];
       $('#eventModal').modal('hide');
     };
 
@@ -152,6 +152,55 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
 
     $scope.findEvents = function() {
       $scope.events = events.query();
+    };
+
+    $scope.populateDropdowns = function() {
+      var select = document.getElementById('selectStartYear');
+      var selectE = document.getElementById('selectEndYear');
+      var i = 0;
+      var el, el2;
+
+      for(i = 2016; i >= 1979; i--) {
+        el = document.createElement('option');
+        el.textContent = i;
+        el.value = i;
+        select.appendChild(el);
+
+        el2 = document.createElement('option');
+        el2.textContent = i;
+        el2.value = i;
+        selectE.appendChild(el2);
+      }
+
+      select = document.getElementById('selectStartMonth');
+      selectE = document.getElementById('selectEndMonth');
+
+      for(i = 1; i <= 12; i++) {
+        el = document.createElement('option');
+        el.textContent = i;
+        el.value = i;
+        select.appendChild(el);
+
+        el2 = document.createElement('option');
+        el2.textContent = i;
+        el2.value = i;
+        selectE.appendChild(el2);
+      }
+
+      select = document.getElementById('selectStartDay');
+      selectE = document.getElementById('selectEndDay');
+
+      for(i = 1; i <= 31; i++) {
+        el = document.createElement('option');
+        el.textContent = i;
+        el.value = i;
+        select.appendChild(el);
+        
+        el2 = document.createElement('option');
+        el2.textContent = i;
+        el2.value = i;
+        selectE.appendChild(el2);
+      }
     };
   }
 ]);

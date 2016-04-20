@@ -21,7 +21,7 @@ var Schema = new Schema({
   religion_actor1: String,
   knowngroup_actor1: String,
 
-  event: String,
+  event_name: String,
 
   start_day: Number,
   start_month: Number,
