@@ -180,17 +180,56 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
       built_query: ''
     */
     $scope.query_builder = function() {
-      // var q = 'SELECT MonthYear,COUNT(*)';
-      //  q += ' FROM [gdelt-bq:full.events]';
-      //  q += ' WHERE ActionGeo_CountryCode= "' + $scope.queryArgs.country_actor1.code + '"';
-      
+      var count = 0;
+      var q = 'SELECT MonthYear,COUNT(*)';
+      q += ' FROM [gdelt-bq:full.events]';
+      q += ' WHERE ';
+      if ($scope.queryArgs.country_actor1.code !== null && $scope.queryArgs.country_actor1.code !== undefined) {
+        q += 'Actor1CountryCode= \"' + $scope.queryArgs.country_actor1.code + '\"';
+        count++;
+      }
 
-      // if ($scope.by_month) {
-      //   q += ' GROUP BY MonthYear ORDER BY MonthYear;';
-      // } else {
-      //   q += ' GROUP BY Year ORDER BY Year;';
-      // }
-      var q = 'SELECT MonthYear,COUNT(*) FROM [gdelt-bq:full.events] WHERE ActionGeo_CountryCode= "US" GROUP BY MonthYear ORDER BY MonthYear;';
+      if ($scope.queryArgs.ethnic_actor1.code !== null && $scope.queryArgs.ethnic_actor1.code !== undefined) {
+        if (count > 0) {
+          q += ' AND ';
+        }
+        q += 'Actor1EthnicCode= \"' + $scope.queryArgs.country_actor1.code + '\"';
+        count++;
+      }
+
+      if ($scope.queryArgs.event_object.code !== null && $scope.queryArgs.event_object.code !== undefined) {
+        if (count > 0) {
+          q += ' AND ';
+        }
+        q += 'EventRootCode=\"' + $scope.queryArgs.event_object.code + '\"';
+        count++;
+      }
+
+      if ($scope.queryArgs.start_year !== null && $scope.queryArgs.start_year !== undefined) {
+        if (count > 0) {
+          q += ' AND ';
+        }
+        console.log('MonthYear > ' + $scope.queryArgs.start_year + '' + $scope.queryArgs.start_month );
+        q += 'MonthYear > ' + $scope.queryArgs.start_year + '' + $scope.queryArgs.start_month;
+        count++;
+      }
+
+      if ($scope.queryArgs.end_year !== null && $scope.queryArgs.end_year !== undefined) {
+        if (count > 0) {
+          q += ' AND ';
+        }
+        q += 'MonthYear < ' + $scope.queryArgs.end_year + '' + $scope.queryArgs.end_month;
+        count++;
+      }
+
+      if ($scope.by_month) {
+        q += ' GROUP BY MonthYear ORDER BY MonthYear;';
+      } else {
+        q += ' GROUP BY Year ORDER BY Year;';
+      }
+      console.log(q);
+      // var q = 'SELECT string(MonthYear) MonthYear, INTEGER(norm*100000)/1000 f0_ FROM ( SELECT Actor1CountryCode, EventRootCode, MonthYear, COUNT(1) AS c, RATIO_TO_REPORT(c) OVER(PARTITION BY MonthYear ORDER BY c DESC) norm FROM [gdelt-bq:full.events] GROUP BY Actor1CountryCode, EventRootCode, MonthYear ) WHERE Actor1CountryCode=\'' + $scope.queryArgs.country_actor1.code + '\' and EventRootCode=\'' + $scope.queryArgs.event_object.code + '\' ORDER BY Actor1CountryCode, EventRootCode, MonthYear;';
+      // var q = 'SELECT MonthYear, count(IF(Actor1CountryCode=\'' + $scope.queryArgs.country_actor1.code + '\',1,null)) f0_ FROM [gdelt-bq:full.events] GROUP BY MonthYear ORDER BY MonthYear;';
       return q;
     };
 
@@ -221,13 +260,23 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
 
       for(i = 1; i <= 12; i++) {
         el = document.createElement('option');
-        el.textContent = i;
-        el.value = i;
+        if (i < 10) {
+          el.textContent = '0' + i;
+          el.value = '0' + i;
+        } else {
+          el.textContent = i;
+          el.value = i;
+        }
         select.appendChild(el);
 
         el2 = document.createElement('option');
-        el2.textContent = i;
-        el2.value = i;
+        if (i < 10) {
+          el2.textContent = '0' + i;
+          el2.value = '0' + i;
+        } else {
+          el2.textContent = i;
+          el2.value = i;
+        }
         selectE.appendChild(el2);
       }
 

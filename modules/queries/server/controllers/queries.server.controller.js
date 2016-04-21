@@ -85,14 +85,14 @@ exports.create = function (req, res) {
 };
 
 function makePlots(query) {
-  console.log('IN MAKEPLOTS');
+
   var data = [{ 
     x:[], 
     y:[], 
     type: 'bar' 
   }];
   var str;
-  //console.log(query.query_results[0].MonthYear);
+  console.log(query);
   for (var i = 0; i < query.query_results.length; i++) {
     str = ('' + query.query_results[i].MonthYear).substring(0, 4);
     str += '-' + ('' + query.query_results[i].MonthYear).substring(4, 6);
