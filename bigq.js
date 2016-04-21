@@ -51,7 +51,7 @@ function printExample(rows) {
  * @param {Function} callback Callback function.
  */
 function queryExample(callback) {
-  var query = 'SELECT MonthYear,COUNT(*) FROM [gdelt-bq:full.events] WHERE ActionGeo_CountryCode= "US" GROUP BY MonthYear ORDER BY MonthYear;';
+  var query = 'SELECT MonthYear,COUNT(*) FROM [gdelt-bq:full.events] WHERE ActionGeo_CountryCode= \'UP\' GROUP BY MonthYear ORDER BY MonthYear';
 
   bigquery.query(query, function(err, rows) {
     if (err) {
