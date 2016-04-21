@@ -4,7 +4,6 @@
 angular.module('queries').controller('QueriesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Queries',
   function ($scope, $stateParams, $location, Authentication, Queries) {
     $scope.authentication = Authentication;
-
     // Create new Querie
     $scope.create = function (isValid) {
       $scope.error = null;
@@ -50,7 +49,7 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
       }
     };
 
-    // Update existing Querie
+      // Update existing Querie
     $scope.update = function (isValid) {
       $scope.error = null;
 
