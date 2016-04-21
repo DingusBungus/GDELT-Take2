@@ -1,9 +1,9 @@
 'use strict';
 
 //Queries service used for communicating with the queries REST endpoints
-angular.module('queries').factory('Queries', ['$resource',
+angular.module('queries').factory('actors', ['$resource',
   function ($resource) {
-    return $resource('api/queries/:queryId', {
+    return $resource('api/actors/:actorId', {
       queryId: '@_id'
     }, {
       update: {

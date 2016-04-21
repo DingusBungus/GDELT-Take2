@@ -5,67 +5,83 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Querie = mongoose.model('Querie'),
+  query = mongoose.model('query'),
+  actor = mongoose.model('actor'),
+  eventX = mongoose.model('event'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a querie
+ * Create a query
  */
 exports.create = function (req, res) {
-  var querie = new Querie(req.body);
-  querie.user = req.user;
+  var query = new query(req.body);
+  query.user = req.user;
 
-  querie.save(function (err) {
+  query.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(querie);
+      res.json(query);
     }
   });
 };
 
 /**
- * Show the current querie
+ * Show the current query
  */
 exports.read = function (req, res) {
-  res.json(req.querie);
+  res.json(req.query);
 };
 
 /**
- * Update a querie
+ * Show the current actor
+ */
+exports.readActor = function (req, res) {
+  res.json(req.actor);
+};
+
+/**
+ * Show the current event
+ */
+exports.readEvent = function (req, res) {
+  res.json(req.event);
+};
+
+/**
+ * Update a query
  */
 exports.update = function (req, res) {
-  var querie = req.querie;
+  var query = req.query;
 
-  querie.title = req.body.title;
-  querie.content = req.body.content;
+  query.title = req.body.title;
+  query.content = req.body.content;
 
-  querie.save(function (err) {
+  query.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(querie);
+      res.json(query);
     }
   });
 };
 
 /**
- * Delete an querie
+ * Delete an query
  */
 exports.delete = function (req, res) {
-  var querie = req.querie;
+  var query = req.query;
 
-  querie.remove(function (err) {
+  query.remove(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(querie);
+      res.json(query);
     }
   });
 };
@@ -74,7 +90,7 @@ exports.delete = function (req, res) {
  * List of Queries
  */
 exports.list = function (req, res) {
-  Querie.find().sort('-created').populate('user', 'displayName').exec(function (err, queries) {
+  query.find().sort('-created').populate('user', 'displayName').exec(function (err, queries) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -86,25 +102,106 @@ exports.list = function (req, res) {
 };
 
 /**
- * Querie middleware
+ * List of Actors
  */
-exports.querieByID = function (req, res, next, id) {
+exports.listActors = function (req, res) {
+  actor.find().sort('name').exec(function (err, actors) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(actors);
+    }
+  });
+};
+
+/**
+ * List of Events
+ */
+exports.listEvents = function (req, res) {
+  eventX.find().sort('name').exec(function (err, events) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(events);
+    }
+  });
+};
+
+/**
+ * query middleware
+ */
+exports.queryByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
-      message: 'Querie is invalid'
+      message: 'query is invalid'
     });
   }
 
-  Querie.findById(id).populate('user', 'displayName').exec(function (err, querie) {
+  query.findById(id).populate('user', 'displayName').exec(function (err, query) {
     if (err) {
       return next(err);
-    } else if (!querie) {
+    } else if (!query) {
       return res.status(404).send({
-        message: 'No querie with that identifier has been found'
+        message: 'No query with that identifier has been found'
       });
     }
-    req.querie = querie;
+    req.query = query;
     next();
   });
 };
+
+/**
+ * query middleware
+ */
+exports.actorByID = function (req, res, next, id) {
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'actor is invalid'
+    });
+  }
+
+  actor.findById(id).exec(function (err, actor) {
+    if (err) {
+      return next(err);
+    } else if (!actor) {
+      return res.status(404).send({
+        message: 'No actor with that identifier has been found'
+      });
+    }
+    req.actor = actor;
+    next();
+  });
+};
+
+/**
+ * query middleware
+ */
+exports.eventByID = function (req, res, next, id) {
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: 'event is invalid'
+    });
+  }
+
+  eventX.findById(id).exec(function (err, event) {
+    if (err) {
+      return next(err);
+    } else if (!event) {
+      return res.status(404).send({
+        message: 'No event with that identifier has been found'
+      });
+    }
+    req.event = event;
+    next();
+  });
+};
+
+
+

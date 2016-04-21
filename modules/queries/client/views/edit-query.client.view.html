@@ -1,20 +1,20 @@
 <section ng-controller="QueriesController" ng-init="findOne()">
   <div class="page-header">
-    <h1>Edit Querie</h1>
+    <h1>Edit query</h1>
   </div>
   <div class="col-md-12">
     <form name="querieForm" class="form-horizontal" ng-submit="update(querieForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
           <label for="title">Title</label>
-          <input name="title" type="text" ng-model="querie.title" id="title" class="form-control" placeholder="Title" required>
+          <input name="title" type="text" ng-model="query.title" id="title" class="form-control" placeholder="Title" required>
           <div ng-messages="querieForm.title.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Querie title is required.</p>
+            <p class="help-block error-text" ng-message="required">query title is required.</p>
           </div>
         </div>
         <div class="form-group">
           <label for="content">Content</label>
-          <textarea name="content" ng-model="querie.content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
+          <textarea name="content" ng-model="query.content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
         </div>
         <div class="form-group">
           <input type="submit" value="Update" class="btn btn-default">

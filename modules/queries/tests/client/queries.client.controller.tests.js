@@ -11,7 +11,7 @@
       $location,
       Authentication,
       Queries,
-      mockQuerie;
+      mockQuery;
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
     // If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
@@ -49,10 +49,10 @@
       Authentication = _Authentication_;
       Queries = _Queries_;
 
-      // create mock querie
-      mockQuerie = new Queries({
+      // create mock query
+      mockQuery = new Queries({
         _id: '525a8422f6d0f87f0e407a33',
-        title: 'An Querie about MEAN',
+        title: 'An query about MEAN',
         content: 'MEAN rocks!'
       });
 
@@ -67,9 +67,9 @@
       });
     }));
 
-    it('$scope.find() should create an array with at least one querie object fetched from XHR', inject(function (Queries) {
-      // Create a sample queries array that includes the new querie
-      var sampleQueries = [mockQuerie];
+    it('$scope.find() should create an array with at least one query object fetched from XHR', inject(function (Queries) {
+      // Create a sample queries array that includes the new query
+      var sampleQueries = [mockQuery];
 
       // Set GET response
       $httpBackend.expectGET('api/queries').respond(sampleQueries);
@@ -82,33 +82,33 @@
       expect(scope.queries).toEqualData(sampleQueries);
     }));
 
-    it('$scope.findOne() should create an array with one querie object fetched from XHR using a querieId URL parameter', inject(function (Queries) {
+    it('$scope.findOne() should create an array with one query object fetched from XHR using a queryId URL parameter', inject(function (Queries) {
       // Set the URL parameter
-      $stateParams.querieId = mockQuerie._id;
+      $stateParams.queryId = mockQuery._id;
 
       // Set GET response
-      $httpBackend.expectGET(/api\/queries\/([0-9a-fA-F]{24})$/).respond(mockQuerie);
+      $httpBackend.expectGET(/api\/queries\/([0-9a-fA-F]{24})$/).respond(mockQuery);
 
       // Run controller functionality
       scope.findOne();
       $httpBackend.flush();
 
       // Test scope value
-      expect(scope.querie).toEqualData(mockQuerie);
+      expect(scope.query).toEqualData(mockQuery);
     }));
 
     describe('$scope.create()', function () {
       var sampleQueriePostData;
 
       beforeEach(function () {
-        // Create a sample querie object
+        // Create a sample query object
         sampleQueriePostData = new Queries({
-          title: 'An Querie about MEAN',
+          title: 'An query about MEAN',
           content: 'MEAN rocks!'
         });
 
         // Fixture mock form input values
-        scope.title = 'An Querie about MEAN';
+        scope.title = 'An query about MEAN';
         scope.content = 'MEAN rocks!';
 
         spyOn($location, 'path');
@@ -116,7 +116,7 @@
 
       it('should send a POST request with the form input values and then locate to new object URL', inject(function (Queries) {
         // Set POST response
-        $httpBackend.expectPOST('api/queries', sampleQueriePostData).respond(mockQuerie);
+        $httpBackend.expectPOST('api/queries', sampleQueriePostData).respond(mockQuery);
 
         // Run controller functionality
         scope.create(true);
@@ -126,8 +126,8 @@
         expect(scope.title).toEqual('');
         expect(scope.content).toEqual('');
 
-        // Test URL redirection after the querie was created
-        expect($location.path.calls.mostRecent().args[0]).toBe('queries/' + mockQuerie._id);
+        // Test URL redirection after the query was created
+        expect($location.path.calls.mostRecent().args[0]).toBe('queries/' + mockQuery._id);
       }));
 
       it('should set scope.error if save error', function () {
@@ -145,11 +145,11 @@
 
     describe('$scope.update()', function () {
       beforeEach(function () {
-        // Mock querie in scope
-        scope.querie = mockQuerie;
+        // Mock query in scope
+        scope.query = mockQuery;
       });
 
-      it('should update a valid querie', inject(function (Queries) {
+      it('should update a valid query', inject(function (Queries) {
         // Set PUT response
         $httpBackend.expectPUT(/api\/queries\/([0-9a-fA-F]{24})$/).respond();
 
@@ -158,7 +158,7 @@
         $httpBackend.flush();
 
         // Test URL location to new object
-        expect($location.path()).toBe('/queries/' + mockQuerie._id);
+        expect($location.path()).toBe('/queries/' + mockQuery._id);
       }));
 
       it('should set scope.error to error response message', inject(function (Queries) {
@@ -174,19 +174,19 @@
       }));
     });
 
-    describe('$scope.remove(querie)', function () {
+    describe('$scope.remove(query)', function () {
       beforeEach(function () {
-        // Create new queries array and include the querie
-        scope.queries = [mockQuerie, {}];
+        // Create new queries array and include the query
+        scope.queries = [mockQuery, {}];
 
         // Set expected DELETE response
         $httpBackend.expectDELETE(/api\/queries\/([0-9a-fA-F]{24})$/).respond(204);
 
         // Run controller functionality
-        scope.remove(mockQuerie);
+        scope.remove(mockQuery);
       });
 
-      it('should send a DELETE request with a valid querieId and remove the querie from the scope', inject(function (Queries) {
+      it('should send a DELETE request with a valid queryId and remove the query from the scope', inject(function (Queries) {
         expect(scope.queries.length).toBe(1);
       }));
     });
@@ -194,7 +194,7 @@
     describe('scope.remove()', function () {
       beforeEach(function () {
         spyOn($location, 'path');
-        scope.querie = mockQuerie;
+        scope.query = mockQuery;
 
         $httpBackend.expectDELETE(/api\/queries\/([0-9a-fA-F]{24})$/).respond(204);
 

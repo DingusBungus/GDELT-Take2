@@ -16,18 +16,18 @@ angular.module('queries').config(['$stateProvider',
       })
       .state('queries.create', {
         url: '/create',
-        templateUrl: 'modules/queries/client/views/create-querie.client.view.html',
+        templateUrl: 'modules/queries/client/views/create-query.client.view.html',
         data: {
           roles: ['user', 'admin']
         }
       })
       .state('queries.view', {
-        url: '/:querieId',
-        templateUrl: 'modules/queries/client/views/view-querie.client.view.html'
+        url: '/:queryId',
+        templateUrl: 'modules/queries/client/views/view-query.client.view.html'
       })
       .state('queries.edit', {
-        url: '/:querieId/edit',
-        templateUrl: 'modules/queries/client/views/edit-querie.client.view.html',
+        url: '/:queryId/edit',
+        templateUrl: 'modules/queries/client/views/edit-query.client.view.html',
         data: {
           roles: ['user', 'admin']
         }

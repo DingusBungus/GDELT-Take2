@@ -1,0 +1,270 @@
+<section ng-controller="QueriesController" ng-init="find(); findActors(); findEvents(); populateDropdowns()">
+  <div class="page-header">
+    <h1>New Query</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="queryForm" class="form-horizontal" ng-submit="create(queryForm.$valid)" novalidate>
+      <h2>Actor 1</h2>
+      <!--Country Actor 1-->
+      <div class="row">
+        <div class="col-md-11" style="border-bottom: 2px; border-color: #000; border-bottom-style: solid; margin-bottom: 20px;"></div>
+        <div class="col-md-10">
+          <input readonly name="country_actor1" type="text" ng-model="queryArgs.country_actor1.name" id="country_actor1" class="form-control actor1" placeholder="Actor 1 Country">
+        </div>
+        <div class="col-md-2">
+          <button style="margin-left: -30px;" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#countryModal">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="countryModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Select Actor Country/Region</h4>
+            </div>
+            <div class="modal-body">
+              <div class="table-scrolling">
+                <table ng-show="true" class="table table-striped table-hover">
+                  <tr style="cursor: pointer;" ng-repeat="actor in actors | filter: { type: 'country' }" ng-click="confirmActor(actors.indexOf(actor), 'country');">
+                    <td>{{actor.name}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <span>Your Selected Actor Country Is: {{queryArgs.country_actor1.name}}</span>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <!--Type Actor 1-->
+      <div class="row">
+        <div class="col-md-10">
+          <input readonly name="type_actor1" type="text" ng-model="queryArgs.type_actor1.name" id="type_actor1" class="form-control actor1" placeholder="Actor 1 Type">
+        </div>
+        <div class="col-md-2">
+          <button style="margin-left: -30px;" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#typeModal">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="typeModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Select Actor Type</h4>
+            </div>
+            <div class="modal-body">
+              <div class="table-scrolling">
+                <table ng-show="true" class="table table-striped table-hover">
+                  <tr style="cursor: pointer;" ng-repeat="actor in actors | filter: { type: 'type' }" ng-click="confirmActor(actors.indexOf(actor), 'type');">
+                    <td>{{actor.name}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <!--Actor 1 Ethnic-->
+      <div class="row">
+        <div class="col-md-10">
+          <input readonly name="ethnic_actor1" type="text" ng-model="queryArgs.ethnic_actor1.name" id="ethnic_actor1" class="form-control actor1" placeholder="Actor 1 Ethnicity">
+        </div>
+        <div class="col-md-2">
+          <button style="margin-left: -30px;" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ethnicModal">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="ethnicModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Select Actor Ethnicity</h4>
+            </div>
+            <div class="modal-body">
+              <div class="table-scrolling">
+                <table ng-show="true" class="table table-striped table-hover">
+                  <tr style="cursor: pointer;" ng-repeat="actor in actors | filter: { type: 'ethnic' }" ng-click="confirmActor(actors.indexOf(actor), 'ethnic');">
+                    <td>{{actor.name}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <!--Actor 1 Religion-->
+      <div class="row">
+        <div class="col-md-10">
+          <input readonly name="religion_actor1" type="text" ng-model="queryArgs.religion_actor1.name" id="religion_actor1" class="form-control actor1" placeholder="Actor 1 Religion">
+        </div>
+        <div class="col-md-2">
+          <button style="margin-left: -30px;" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#religionModal">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="religionModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Select Actor Religion</h4>
+            </div>
+            <div class="modal-body">
+              <div class="table-scrolling">
+                <table ng-show="true" class="table table-striped table-hover">
+                  <tr style="cursor: pointer;" ng-repeat="actor in actors | filter: { type: 'religion' }" ng-click="confirmActor(actors.indexOf(actor), 'religion');">
+                    <td>{{actor.name}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <!--Actor 1 KnownGroup-->
+      <div class="row">
+        <div class="col-md-10">
+          <input readonly name="knowngroup_actor1" type="text" ng-model="queryArgs.knowngroup_actor1.name" id="knowngroup_actor1" class="form-control actor1" placeholder="Actor 1 Known Group">
+        </div>
+        <div class="col-md-2">
+          <button style="margin-left: -30px;" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#knowngroupModal">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="knowngroupModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Select Actor Known Group</h4>
+            </div>
+            <div class="modal-body">
+              <div class="table-scrolling">
+                <table ng-show="true" class="table table-striped table-hover">
+                  <tr style="cursor: pointer;" ng-repeat="actor in actors | filter: { type: 'knowngroup' }" ng-click="confirmActor(actors.indexOf(actor), 'knowngroup');">
+                    <td>{{actor.name}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <h2>Event</h2>
+
+      <!--Event-->
+      <div class="row">
+        <div class="col-md-11" style="border-bottom: 2px; border-color: #000; border-bottom-style: solid; margin-bottom: 20px;"></div>
+        <div class="col-md-10">
+          <input readonly name="event" type="text" ng-model="queryArgs.event_object.name" id="event" class="form-control actor1" placeholder="Event">
+        </div>
+        <div class="col-md-2">
+          <button style="margin-left: -30px;" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#eventModal">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="eventModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Select Event</h4>
+            </div>
+            <div class="modal-body">
+              <div class="table-scrolling">
+                <table ng-show="true" class="table table-striped table-hover">
+                  <tr style="cursor: pointer;" ng-repeat="event in events" ng-click="confirmEvent(events.indexOf(event));">
+                    <td>{{event_object.name}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <h2>Dates</h2>
+      <div class="row">
+        <div class="col-md-11" style="border-bottom: 2px; border-color: #000; border-bottom-style: solid; margin-bottom: 20px;"></div>
+      </div>
+      <h4>Start Date</h4>
+      <div class="row">
+        <div class="col-md-10">
+          <select ng-model="start_day" id="selectStartDay" size="1" style="width:auto;"></select>
+          <select ng-model="start_month" id="selectStartMonth" size ="1" style="width:auto;"></select>
+          <select ng-model="start_year" id="selectStartYear" size = "1" style="width:auto;"></select>
+        </div>
+      </div>
+      <h4>End Date</h4>
+      <div class="row">
+        <div class="col-md-10">
+          <select ng-model="end_day" id="selectEndDay" size="1" style="width:auto;"></select>
+          <select ng-model="end_month" id="selectEndMonth" size ="1" style="width:auto;"></select>
+          <select ng-model="end_year" id="selectEndYear" size = "1" style="width:auto;"></select>
+        </div>
+      </div>
+      <h4>Time Intervals</h4>
+      <div class="row">
+        <div class="col-md-10">
+          <label class="checkbox-inline"><input type="checkbox" id="cbox1" ng-model="by_month">By Month (Not Selected = By Year)
+        </div>
+      </div>
+
+      <br>
+
+      <div class="form-group col-md-3">
+        <input type="submit" class="btn btn-primary btn-lg">
+      </div>
+      <div ng-show="error" class="text-danger">
+        <strong ng-bind="error"></strong>
+      </div>
+    </form>
+  </div>
+</section>
+

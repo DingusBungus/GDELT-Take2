@@ -12,12 +12,26 @@ module.exports = function (app) {
     .get(queries.list)
     .post(queries.create);
 
-  // Single querie routes
-  app.route('/api/queries/:querieId').all(queriesPolicy.isAllowed)
+  // Single query routes
+  app.route('/api/queries/:queryId').all(queriesPolicy.isAllowed)
     .get(queries.read)
     .put(queries.update)
     .delete(queries.delete);
 
-  // Finish by binding the querie middleware
-  app.param('querieId', queries.querieByID);
+  app.route('/api/actors/')
+    .get(queries.listActors);
+
+  app.route('/api/actors/:actorId')
+    .get(queries.readActor);
+
+  app.route('/api/events/')
+    .get(queries.listEvents);
+
+  app.route('/api/events/:eventId')
+    .get(queries.readEvent);
+
+  // Finish by binding the query middleware
+  app.param('queryId', queries.queryByID);
+  app.param('actorId', queries.actorByID);
+  app.param('eventId', queries.eventByID);
 };
