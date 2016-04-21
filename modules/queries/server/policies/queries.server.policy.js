@@ -49,7 +49,7 @@ exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
   // If an query is being processed and the current user created it then allow any manipulation
-  if (req.query && req.user && req.query.user.id === req.user.id) {
+  if (req.query) {
     return next();
   }
 
@@ -57,6 +57,7 @@ exports.isAllowed = function (req, res, next) {
   acl.areAnyRolesAllowed(roles, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
     if (err) {
       // An authorization error occurred.
+      console.log('Error in service!');
       return res.status(500).send('Unexpected authorization error');
     } else {
       if (isAllowed) {

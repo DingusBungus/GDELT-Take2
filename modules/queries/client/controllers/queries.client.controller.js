@@ -17,7 +17,9 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
       end_day: '',
       end_month: '',
       end_year: '',
-      by_month: false
+      by_month: false,
+      built_query: '',
+      query_results: []
     };
 
     $scope.actors = [];
@@ -28,9 +30,11 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
       $scope.error = null;
 
       if (!isValid) {
+        console.log('NOT VALID!');
         $scope.$broadcast('show-errors-check-validity', 'queryForm');
         return false;
       }
+      $scope.built_query = $scope.query_builder();
 
       // Create new query object
       var query = new Queries({
@@ -46,12 +50,16 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
         end_day: $scope.queryArgs.end_day,
         end_month: $scope.queryArgs.end_month,
         end_year: $scope.queryArgs.end_year,
-        by_month: $scope.queryArgs.by_month
+        by_month: $scope.queryArgs.by_month,
+        built_query: $scope.built_query,
+        query_results: []
       });
 
       // Redirect after save
       query.$save(function (response) {
         $location.path('queries/' + response._id);
+
+        //console.log(response._id);
 
         // Clear form fields
         $scope.queryArgs = {
@@ -67,7 +75,9 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
           end_day: '',
           end_month: '',
           end_year: '',
-          by_month: false
+          by_month: false,
+          built_query: '',
+          query_results: []
         };
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
@@ -152,6 +162,40 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
 
     $scope.findEvents = function() {
       $scope.events = events.query();
+    };
+    /*
+      country_actor1: '',
+      ethnic_actor1: '',
+      type_actor1: '',
+      religion_actor1: '',
+      knowngroup_actor1: '',
+      event_object: '',
+      start_day: '',
+      start_month: '',
+      start_year: '',
+      end_day: '',
+      end_month: '',
+      end_year: '',
+      by_month: false,
+      built_query: ''
+    */
+    $scope.query_builder = function() {
+      // var q = 'SELECT MonthYear,COUNT(*)';
+      //  q += ' FROM [gdelt-bq:full.events]';
+      //  q += ' WHERE ActionGeo_CountryCode= "' + $scope.queryArgs.country_actor1.code + '"';
+      
+
+      // if ($scope.by_month) {
+      //   q += ' GROUP BY MonthYear ORDER BY MonthYear;';
+      // } else {
+      //   q += ' GROUP BY Year ORDER BY Year;';
+      // }
+      var q = 'SELECT MonthYear,COUNT(*) FROM [gdelt-bq:full.events] WHERE ActionGeo_CountryCode= "US" GROUP BY MonthYear ORDER BY MonthYear;';
+      return q;
+    };
+
+    $scope.call = function() {
+      console.log(typeof($scope.query.query_results));
     };
 
     $scope.populateDropdowns = function() {
