@@ -205,16 +205,16 @@ angular.module('queries').controller('QueriesController', ['$scope', '$statePara
         count++;
       }
 
-      if ($scope.queryArgs.start_year !== null && $scope.queryArgs.start_year !== undefined) {
+      if ($scope.queryArgs.start_year > 0 && $scope.queryArgs.start_year !== undefined) {
         if (count > 0) {
           q += ' AND ';
         }
-        console.log('MonthYear > ' + $scope.queryArgs.start_year + '' + $scope.queryArgs.start_month );
+        console.log('MonthYear > ' + $scope.queryArgs.start_year + '' + $scope.queryArgs.start_month);
         q += 'MonthYear > ' + $scope.queryArgs.start_year + '' + $scope.queryArgs.start_month;
         count++;
       }
 
-      if ($scope.queryArgs.end_year !== null && $scope.queryArgs.end_year !== undefined) {
+      if ($scope.queryArgs.end_year > 0 && $scope.queryArgs.end_year !== undefined) {
         if (count > 0) {
           q += ' AND ';
         }
