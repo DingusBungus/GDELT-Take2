@@ -7,6 +7,9 @@
       padding: 0;
       margin: 0;
     }
+    h1{
+      text-align: center;
+    }
   </style>
 
   <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
@@ -15,51 +18,68 @@
 
 <section ng-controller="QueriesController" ng-init="findOne()">
   <h1>Query</h1>
-  <h4 style="text-align: center;">{{query.built_query}}</h4>
-  <br>
-  <h1>Results</h1>
-  <h4 style="text-align: center;">{{query.query_results}}</h4>
+  <div class="pull-right">
+    <a class="btn btn-primary" ng-click="remove();">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <div class="col-md-10 col-md-offset-1">
+    <h4 style="text-align: center;">{{query.built_query}}</h4>
+  </div>
+  <div class="col-md-2">
+  </div>
 
-  <div>
+  <div class="col-md-12">
     <h1>Line Plot</h1>
     <a href="https://plot.ly/~matthewlv30/2" target="_blank" title="y" style="display: block; text-align: center;"><img src="https://plot.ly/~matthewlv30/2.png" alt="y" style="max-width: 100%;width: 500px;"  width="500" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="matthewlv30:2"  src="https://plot.ly/embed.js" async></script>
     </div>
     
-    <div>
+    <div class="col-md-12">
     <h1>TimeLine Plot</h1>
     <a href="https://plot.ly/~matthewlv30/4" target="_blank" title="y" style="display: block; text-align: center;"><img src="https://plot.ly/~matthewlv30/4.png" alt="y" style="max-width: 100%;width: 500px;"  width="500" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="matthewlv30:4"  src="https://plot.ly/embed.js" async></script>
     </div>
     
     
-    <div>
+    <!-- <div class="col-md-12">
     <h1>SubPlot Plot</h1>
     <a href="https://plot.ly/~matthewlv30/8" target="_blank" title="y" style="display: block; text-align: center;"><img src="https://plot.ly/~matthewlv30/8.png" alt="y" style="max-width: 100%;width: 500px;"  width="500" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="matthewlv30:8"  src="https://plot.ly/embed.js" async></script>
-    </div>
+    </div> -->
 
     
-    <div>
+    <div class="col-md-12">
     <h1>Scatter Plot</h1>
     <a href="https://plot.ly/~matthewlv30/6" target="_blank" title="y" style="display: block; text-align: center;"><img src="https://plot.ly/~matthewlv30/6.png" alt="y" style="max-width: 100%;width: 500px;"  width="500" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="matthewlv30:6"  src="https://plot.ly/embed.js" async></script>
     </div>
 
     
-    <div>
+    <div class="col-md-12">
     <h1>3D Plot</h1>
     <a href="https://plot.ly/~matthewlv30/10" target="_blank" title="y" style="display: block; text-align: center;"><img src="https://plot.ly/~matthewlv30/10.png" alt="y" style="max-width: 100%;width: 500px;"  width="500" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="matthewlv30:10"  src="https://plot.ly/embed.js" async></script>
     </div>
 
-    <iframe width='100%' height='520' frameborder='0' src='https://gdelt.cartodb.com/viz/dba8d716-f804-11e4-b9c4-0e853d047bba/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
-  
-
-    
-  <div class="pull-right">
-    <a class="btn btn-primary" ng-click="remove();">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
+    <!-- <iframe width='100%' height='520' frameborder='0' src='https://gdelt.cartodb.com/viz/dba8d716-f804-11e4-b9c4-0e853d047bba/embed_map' allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe> -->
+  <div class="col-md-12">
+    <h1>Results</h1>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="tableWrapper panel panel-body">
+          <table class="table table-striped table-hover">
+            <tr>
+              <th>MonthYear (YYYYMM)</th>
+              <th>Count</th>
+            </tr>
+            <tr ng-repeat="row in query.query_results">
+              <td>{{row.MonthYear}}</td>
+              <td>{{row.f0_}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
