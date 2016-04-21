@@ -5,18 +5,52 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  query = mongoose.model('query'),
+  Query = mongoose.model('Query'),
   actor = mongoose.model('actor'),
   eventX = mongoose.model('event'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+var gcloud = require('gcloud')({
+  projectId: 'gdelt-pre'
+});
 
-/**
- * Create a query
- */
-exports.create = function (req, res) {
-  var query = new query(req.body);
-  query.user = req.user;
+/*-------------------------------------------------------------------*/
+// Copyright 2016, Google, Inc.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
+// [START complete]
+
+// [START auth]
+// You must set the GOOGLE_APPLICATION_CREDENTIALS and GCLOUD_PROJECT
+// environment variables to run this sample
+
+// Get a reference to the bigquery component
+var bigquery = gcloud.bigquery();
+
+function printExample(rows) {
+  rows.forEach(function (row) {
+    var str = '';
+    for (var key in row) {
+      if (str) {
+        str += '\t';
+      }
+      str += key + ': ' + row[key];
+    }
+    console.log(str);
+  });
+}
+
+function doCreate(query, res) {
+  
   query.save(function (err) {
     if (err) {
       return res.status(400).send({
@@ -25,6 +59,27 @@ exports.create = function (req, res) {
     } else {
       res.json(query);
     }
+  });
+}
+/*-------------------------------------------------------------------*/
+
+/**
+ * Create a query
+ */
+exports.create = function (req, res) { 
+
+  var queryBody = new Query(req.body);
+  
+  var query = queryBody.built_query;
+  //console.log(query);
+  bigquery.query(query, function(err, rows) {
+    if (err) {
+      return res.status(404).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }
+    queryBody.query_results = rows;
+    doCreate(queryBody, res);
   });
 };
 
@@ -90,7 +145,7 @@ exports.delete = function (req, res) {
  * List of Queries
  */
 exports.list = function (req, res) {
-  query.find().sort('-created').populate('user', 'displayName').exec(function (err, queries) {
+  Query.find().sort('-created').populate('user', 'displayName').exec(function (err, queries) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -142,7 +197,7 @@ exports.queryByID = function (req, res, next, id) {
     });
   }
 
-  query.findById(id).populate('user', 'displayName').exec(function (err, query) {
+  Query.findById(id).populate('user', 'displayName').exec(function (err, query) {
     if (err) {
       return next(err);
     } else if (!query) {

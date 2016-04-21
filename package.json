@@ -36,6 +36,7 @@
     "express-session": "^1.11.3",
     "file-stream-rotator": "~0.0.6",
     "forever": "~0.14.2",
+    "gcloud": "^0.30.3",
     "generate-password": "^1.1.1",
     "glob": "^5.0.13",
     "google-auth-library": "^0.9.7",

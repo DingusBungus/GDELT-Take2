@@ -1,36 +1,33 @@
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-  <title>Googlemaps Heatmap Layer</title>
-  <style>
-    html { height: 100% }
-    body { height: 100%; margin: 0; padding: 0; font-family:sans-serif; }
-    #map-canvas { height: 50% }
-    h1 { position:absolute; background:black; color:white; padding:10px; font-weight:200; z-index:10000;}
-    #all-examples-info { position:absolute; background:white; font-size:16px; padding:20px; bottom:20px; width:350px; line-height:150%; border:1px solid rgba(0,0,0,.2);}
-  </style>
-  <style>
-    html, body, #map {
-      height: 100%;
-      padding: 0;
-      margin: 0;
-    }
-  </style>
-
-  <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-  <script src="/node_modules/heatmap.js/heatmap.js"></script>
-  <script src="/public/lib/heatmap.js-amd/plugins/gmaps-heatmap.js"></script>
-</head>
-
-<section ng-controller="QueriesController" ng-init="findOne()">
-  <h1>Query</h1>
-  <h4 style="text-align: center;">{{query.built_query}}</h4>
-  <br>
-  <h1>Results</h1>
-  <h4 style="text-align: center;">{{query.query_results}}</h4>
-
-  <div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Googlemaps Heatmap Layer</title>
+    <style>
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0; font-family:sans-serif; }
+      #map-canvas { height: 50% }
+      h1 { position:absolute; background:black; color:white; padding:10px; font-weight:200; z-index:10000;}
+      #all-examples-info { position:absolute; background:white; font-size:16px; padding:20px; bottom:20px; width:350px; line-height:150%; border:1px solid rgba(0,0,0,.2);}
+    </style>
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="C:\Users\Matthew\Documents\GitHub\GDELT-Take2\node_modules\heatmap.js\heatmap.js"></script>
+    <script src="C:\Users\Matthew\Documents\GitHub\GDELT-Take2\public\lib\heatmap.js-amd\plugins\gmaps-heatmap.js"></script>
+    <script src="C:\Users\Matthew\Documents\GitHub\GDELT-Take2\bigq.js"></script>
+  </head>
+  <body>
+    <div>
     <h1>Line Plot</h1>
     <a href="https://plot.ly/~matthewlv30/2" target="_blank" title="y" style="display: block; text-align: center;"><img src="https://plot.ly/~matthewlv30/2.png" alt="y" style="max-width: 100%;width: 500px;"  width="500" onerror="this.onerror=null;this.src='https://plot.ly/404.png';" /></a>
     <script data-plotly="matthewlv30:2"  src="https://plot.ly/embed.js" async></script>
@@ -144,10 +141,5 @@
         };
         heatmap.setData(testData);
 </script>
-
-  <div class="pull-right">
-    <a class="btn btn-primary" ng-click="remove();">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
-  </div>
-</section>
+  </body>
+</html>

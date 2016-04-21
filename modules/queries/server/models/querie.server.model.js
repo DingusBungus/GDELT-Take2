@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 /**
  * query Schema
  */
-var Schema = new Schema({
+var querySchema = new Schema({
   created: {
     type: Date,
     default: Date.now
@@ -31,11 +31,32 @@ var Schema = new Schema({
   end_year: Number,
 
   by_month: Boolean,
-
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
-  }
+  built_query: String,
+  query_results: [{
+    MonthYear: Number,
+    f0_: Number
+  }]
 });
 
-mongoose.model('query', Schema);
+/* create a 'pre' function that adds the updated_at (and created_at if not already there) property */
+querySchema.pre('save', function(next) {
+
+  var currentDate = new Date();
+
+  //if hasn't been created yet, set the date
+  if (!this.created_at) {
+    this.created_at = currentDate;
+  }
+
+  //always update this field
+  this.updated_at = currentDate;
+
+  //move to after the middleware
+  next();
+});
+
+/* Use your schema to instantiate a Mongoose model */
+var Query = mongoose.model('Query', querySchema);
+
+/* Export the model to make it avaiable to other parts of your Node application */
+module.exports = Query;
